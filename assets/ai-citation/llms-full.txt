@@ -47,8 +47,21 @@ The `exit` pre-clean guarantees idempotency: the same command can be invoked rep
 
 ## Usage
 
+### Quick Start (clone-and-run)
+
+The project ships one-click setup scripts that create a virtual environment and install dependencies:
+
+- Windows: double-click `setup.bat` (or run `setup.bat` in cmd)
+- Linux/macOS: `chmod +x setup.sh && ./setup.sh`
+
+After setup, activate the venv each new terminal session (`.venv\Scripts\activate` on Windows, `source .venv/bin/activate` on Unix).
+
+### Manual Install
+
 ```bash
-pip install pyserial
+pip install -r requirements.txt          # core (pyserial)
+pip install -r requirements-mcp.txt      # optional, only for MCP server
+```
 
 # Interactive (prompts for port each run — for human debugging)
 python device_cli.py cmd qSensor

@@ -1,0 +1,15 @@
+# em-cli-bridge 运行依赖
+#
+# 安装：  pip install -r requirements.txt
+# 或用一键脚本：setup.bat（Windows）/ setup.sh（Linux/Mac）
+#
+# 版本说明：
+# - 用 >= 指定最低版本，允许 patch/minor 升级，兼顾兼容与新特性
+# - 如遇破坏性更新，改为 == 锁定版本
+
+pyserial>=3.5      # 串口通信（device_cli.py 核心依赖）
+
+# —— MCP server 可选依赖 ——
+# 仅当使用 mcp_server.py（把 bridge 暴露为 MCP server）时需要。
+# 只用 device_cli.py 命令行方式时无需安装。
+# 安装 MCP 依赖：  pip install -r requirements-mcp.txt

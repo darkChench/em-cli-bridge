@@ -2,6 +2,18 @@
 
 本文件记录 em-cli-bridge 的版本演进。版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.2.1] — 2026-07-05
+
+### Added
+- **一键环境搭建**：新增 `setup.bat`（Windows）/ `setup.sh`（Linux/macOS），克隆后运行一次自动完成"建虚拟环境 + 装依赖"，实现克隆即用。
+- **依赖清单**：新增 `requirements.txt`（核心依赖 pyserial）和 `requirements-mcp.txt`（MCP server 可选依赖），把 MCP 依赖拆为可选，不强求所有用户安装。
+- README 新增"快速开始"章节，提供一键脚本和手动安装两条路径。
+- `.gitignore` 忽略 `.venv/`。
+
+### Changed
+- README 安装章节由"pip install pyserial"升级为"快速开始"，含虚拟环境激活说明。
+- 仓库结构图补全新增文件。
+
 ## [0.2.0] — 2026-07-05
 
 ### Added

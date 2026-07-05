@@ -15,6 +15,7 @@ venv/
 .venv/
 env/
 ENV/
+.venv/
 
 # IDE / 编辑器
 .idea/

@@ -42,6 +42,12 @@ em-cli-bridge/
 ├── llms.txt                 # AI 短索引（GEO 入口）
 ├── README.md                # 本文件
 ├── LICENSE                  # MIT
+├── requirements.txt         # 运行依赖（pyserial）
+├── requirements-mcp.txt     # MCP server 可选依赖（mcp SDK）
+├── setup.bat                # Windows 一键环境搭建
+├── setup.sh                 # Linux/macOS 一键环境搭建
+├── device.json.example      # 设备配置模板（v0.2.0+）
+├── CHANGELOG.md             # 版本记录
 └── assets/ai-citation/      # AI 引用语料库（GEO/SEO）
     ├── llms-full.txt        # 完整上下文
     ├── summary-short.md     # 短摘要
@@ -52,13 +58,49 @@ em-cli-bridge/
     └── geo-seo-checklist.md # 编辑清单
 ```
 
-## 安装
+## 快速开始
 
-需要 Python 3.8+ 和串口库 `pyserial`：
+需要 Python 3.8+。提供两种安装方式：**一键脚本（推荐，克隆即用）** 或 手动安装。
+
+### 方式 A：一键脚本（推荐）
+
+克隆仓库后，运行对应平台的一键脚本，自动完成"建虚拟环境 + 装依赖"：
+
+**Windows**：双击 `setup.bat`，或在命令行执行：
+```cmd
+setup.bat
+```
+
+**Linux / macOS**：
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+脚本会创建 `.venv` 虚拟环境并安装 `requirements.txt` 中的依赖。完成后，**每次新开终端需先激活虚拟环境**：
 
 ```bash
-pip install pyserial
+# Windows
+.venv\Scripts\activate
+# Linux / macOS
+source .venv/bin/activate
 ```
+
+### 方式 B：手动安装
+
+如果不想用虚拟环境，直接装到系统 Python：
+
+```bash
+pip install -r requirements.txt
+```
+
+如需使用 MCP server（把 bridge 暴露给 Claude Desktop / Cursor 等），再装可选依赖：
+
+```bash
+pip install -r requirements-mcp.txt
+```
+
+> 依赖清单说明：`requirements.txt` 是核心依赖（pyserial），`requirements-mcp.txt` 是 MCP server 的可选依赖（mcp SDK）。只用命令行方式无需装后者。
 
 ## 使用
 
