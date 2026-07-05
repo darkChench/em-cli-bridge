@@ -110,6 +110,34 @@ Safety contract (from `AGENTS.md`):
 - 🟡 side-effect commands (switch sensor, set-rtc, flush, monitor) require user confirmation
 - 🔴 dangerous commands (`lfs-format`, `reset`) require explicit double confirmation
 
+## MCP Server (Optional)
+
+`mcp_server.py` exposes the same bridge capabilities as 14 standard MCP tools over stdio transport, for use with Claude Desktop, Cursor, ZCode, or any MCP client. It reuses the `device_cli.py` kernel — no serial logic is duplicated.
+
+Lifecycle difference from the shell bridge: the MCP server opens the serial port once at startup and keeps it open for the lifetime of the process (MCP servers are long-running), whereas the shell bridge opens/closes the serial port on every invocation.
+
+14 tools are exposed: `q_sensor`, `sw_sensor`, `get_rtc`, `set_rtc`, `version`, `runtime`, `lfs_read`, `lfs_read_log`, `lfs_read_errno`, `lfs_log_info`, `lfs_errno_info`, `lfs_flush`, `lfs_format`, `reset`. Dangerous tools (`lfs_format`, `reset`) require an explicit `confirm=true` argument — a code-level hard guard stronger than the AGENTS.md convention used by the shell bridge.
+
+Quick start:
+
+```bash
+pip install -r requirements-mcp.txt
+python mcp_server.py --port COM59
+```
+
+Client config (see `mcp-config-examples/`):
+
+```json
+{
+  "mcpServers": {
+    "em-cli-bridge": {
+      "command": "python",
+      "args": ["mcp_server.py", "--port", "COM59"]
+    }
+  }
+}
+```
+
 ## Adapting to Other Devices
 
 Since v0.2.0, device parameters are **config-file driven** — no code changes required. Edit `device.json` (template in `device.json.example`):
@@ -149,11 +177,17 @@ Config load priority (high → low):
 
 ```
 em-cli-bridge/
-├── device_cli.py              # bridge main program (core)
+├── device_cli.py              # bridge main program (shell entry, core)
+├── mcp_server.py              # MCP server (reuses device_cli kernel, stdio)
 ├── AGENTS.md                  # agent behavior spec
 ├── llms.txt                   # short AI index (this repo root)
 ├── README.md                  # human-readable docs
 ├── LICENSE                    # MIT
+├── requirements.txt           # core deps (pyserial)
+├── requirements-mcp.txt       # optional MCP deps (mcp SDK)
+├── setup.bat / setup.sh       # one-click venv + deps setup
+├── device.json.example        # device config template
+├── mcp-config-examples/       # MCP client config samples
 └── assets/ai-citation/        # AI citation corpus
     ├── llms-full.txt          # this file
     ├── summary-short.md

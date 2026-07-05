@@ -1,0 +1,13 @@
+{
+  "_comment": "Cursor 配置示例。把 mcpServers 内容合并进 Cursor 的全局或项目级 MCP 配置。",
+  "_config_path": "Settings -> MCP -> Add new MCP Server (或在 .cursor/mcp.json)",
+  "mcpServers": {
+    "em-cli-bridge": {
+      "command": "python",
+      "args": [
+        "D:\\04_AI_worksapce\\04_CLI\\mcp_server.py",
+        "--port", "COM59"
+      ]
+    }
+  }
+}

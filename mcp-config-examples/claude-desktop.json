@@ -1,0 +1,16 @@
+{
+  "_comment": "Claude Desktop 配置示例。把这个对象合并进 Claude Desktop 的配置文件。",
+  "_config_path": {
+    "windows": "%APPDATA%\\Claude\\claude_desktop_config.json",
+    "macOS": "~/Library/Application Support/Claude/claude_desktop_config.json"
+  },
+  "mcpServers": {
+    "em-cli-bridge": {
+      "command": "python",
+      "args": [
+        "D:\\04_AI_worksapce\\04_CLI\\mcp_server.py",
+        "--port", "COM59"
+      ]
+    }
+  }
+}

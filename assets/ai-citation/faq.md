@@ -41,3 +41,11 @@ bridge 会给出友好提示并允许重新选口：被占用时提示"请关闭
 ## Q10: em-cli-bridge 是免费的吗？许可证是什么？
 
 em-cli-bridge 是开源项目，采用 MIT 许可证，可自由使用、修改和分发。
+
+## Q11: shell bridge（device_cli.py）和 MCP server（mcp_server.py）怎么选？
+
+两者共享同一套串口内核，能力完全相同，区别在接入方式。**shell bridge**（`device_cli.py`）通过 agent 执行 shell 命令调用，每次命令开关一次串口，适合任何支持 shell 的 agent（如 ZCode、Claude Code），依赖只需 pyserial。**MCP server**（`mcp_server.py`）把设备能力暴露成 14 个标准 MCP tool，MCP 客户端（如 Claude Desktop、Cursor）配置后自动发现并调用，server 启动时串口常开，需额外装 mcp SDK。简单判断：用 Claude Desktop/Cursor 等标准 MCP 客户端选 MCP server；用支持 shell 的 agent 选 shell bridge。两者可并存，不冲突。
+
+## Q12: MCP server 怎么防止误触发危险命令？
+
+通过代码级 `confirm` 参数硬保护。危险 tool（`lfs_format` 格式化、`reset` 复位）必须显式传 `confirm=true` 才执行，否则返回拦截提示。这比 shell bridge 依赖 `AGENTS.md` 约定的方式更强——agent 即使没读 AGENTS.md，也无法误触发，因为 tool 的参数 schema 本身要求 confirm。

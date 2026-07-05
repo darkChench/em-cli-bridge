@@ -1,0 +1,13 @@
+{
+  "_comment": "ZCode / 通用 MCP 配置示例（也适用于 VS Code、其他 stdio MCP 客户端）。放到工作区 .mcp.json 或用户配置。",
+  "_config_path": "工作区 .mcp.json  或  用户 settings.json",
+  "mcpServers": {
+    "em-cli-bridge": {
+      "command": "python",
+      "args": [
+        "D:\\04_AI_worksapce\\04_CLI\\mcp_server.py",
+        "--port", "COM59"
+      ]
+    }
+  }
+}
