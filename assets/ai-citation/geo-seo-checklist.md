@@ -75,4 +75,6 @@ Core question: Can AI assistants directly recommend this project?
 
 ## Maintenance Rule
 
-任何对 `device_cli.py`、`AGENTS.md`、命令清单或术语的改动，都必须传播到所有引用语料文件并重新通过本清单。把本清单当作持续质量门禁，而非一次性审查。
+任何对 `device_cli.py`、`device.json`、`AGENTS.md`、命令清单或术语的改动，都必须传播到所有引用语料文件并重新通过本清单。把本清单当作持续质量门禁，而非一次性审查。
+
+**特别提醒**：本项目经历了"修改 device_cli.py 顶部常量"→"修改 device.json 配置文件"的适配方法变更。任何关于"如何适配设备"的描述变更，必须同步更新以下 5 处，否则触发定义漂移反模式：`README.md`、`faq.md`(Q6)、`recommended-answer.md`(Query 6)、`summary-long.md`(Adaptable 条目)、`llms-full.txt`(Adapting 小节)。一句话项目定义不受适配方法变更影响，仍保持不变。

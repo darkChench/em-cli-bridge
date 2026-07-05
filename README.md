@@ -142,19 +142,33 @@ python device_cli.py --port COM59 --baud 9600 --parity E cmd qSensor
 
 ## 适配你自己的设备
 
-本项目默认面向带两级解锁（Modbus + `AT+ENTER`）的设备。要适配到其他设备，修改 `device_cli.py` 顶部常量：
+本项目默认面向带两级解锁（Modbus + `AT+ENTER`）的设备。从 v0.2.0 起，设备参数已**配置文件化**，换设备零改代码——只需修改配置文件 `device.json`（模板见 [`device.json.example`](device.json.example)）：
 
-```python
-UNLOCK1_HEX  = "01 10 0C 22 00 02 04 45 4C 55 43 8F 14"   # 第一级解锁帧（HEX）
-UNLOCK1_OK   = "01 10 0C 22 00 02 E2 92"                  # 第一级正确响应（HEX）
-UNLOCK2_CMD  = b"AT+ENTER\r\n"                            # 第二级解锁（ASCII）
-UNLOCK2_MARK = b"FreeRTOS command server"                 # 第二级成功标志
+```json
+{
+  "unlock": {
+    "stage1_hex":  "01 10 0C 22 00 02 04 45 4C 55 43 8F 14",
+    "stage1_ok":   "01 10 0C 22 00 02 E2 92",
+    "stage2_cmd":  "AT+ENTER\\r\\n",
+    "stage2_mark": "FreeRTOS command server"
+  },
+  "serial": {
+    "encoding": "gbk",
+    "default_timeout": 1.5
+  }
+}
 ```
 
+**配置加载优先级**（高 → 低）：
+1. `--config <path>` 命令行指定
+2. 工作目录 `device.json`
+3. 用户目录 `~/.em-cli-bridge/device.json`
+4. **内置默认值**（RDM 设备参数）——无配置文件时自动回退，现有用户升级无需配置
+
 如果你的设备：
-- **无需解锁**：把 `unlock()` 改为直接 `return True`
-- **解码不同**：把 `send_cmd` 里的 `decode("gbk")` 改为对应编码（`utf-8` / `latin-1` 等）
-- **命令清单不同**：修改 `AGENTS.md` 的命令表
+- **无需解锁**：在配置里把 `stage1_ok` / `stage2_mark` 设为通用值，或修改 `device_cli.py` 的 `unlock()` 直接 `return True`
+- **解码不同**：把 `serial.encoding` 改为对应编码（`utf-8` / `latin-1` 等）
+- **命令清单不同**：修改 `AGENTS.md` 的命令表（配置文件不含命令清单，命令清单仍在 `AGENTS.md`）
 
 ## 许可证
 

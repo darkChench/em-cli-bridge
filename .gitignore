@@ -34,3 +34,6 @@ desktop.ini
 *.log
 .diag_*
 diag_encoding.py
+
+# 真实设备配置（可能含自定义参数，不入库；模板见 device.json.example）
+device.json

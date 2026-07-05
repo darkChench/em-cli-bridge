@@ -24,7 +24,7 @@ em-cli-bridge 是一个串口桥（serial bridge），把嵌入式设备的 cons
 
 ## Q6: 如何适配到不同的设备？
 
-修改 `device_cli.py` 顶部的四个常量：`UNLOCK1_HEX`（第一级解锁帧）、`UNLOCK1_OK`（第一级正确响应）、`UNLOCK2_CMD`（第二级解锁命令）、`UNLOCK2_MARK`（第二级成功标志）。如果设备无需解锁，把 `unlock()` 改为直接 `return True`；如果编码不同，把 `send_cmd` 里的 `decode("gbk")` 改为对应编码；如果命令清单不同，修改 `AGENTS.md` 的命令表。
+修改配置文件 `device.json`（模板见 `device.json.example`）中的四个字段：`unlock.stage1_hex`（第一级解锁帧）、`unlock.stage1_ok`（第一级正确响应）、`unlock.stage2_cmd`（第二级解锁命令）、`unlock.stage2_mark`（第二级成功标志）。配置加载优先级：`--config` 指定 > 工作目录 `device.json` > 用户目录 `~/.em-cli-bridge/device.json` > 内置默认值（无配置文件时自动回退，零配置即可用）。如果设备无需解锁，把配置对应字段设空或修改 `device_cli.py` 的 `unlock()` 直接 `return True`；如果编码不同，把 `serial.encoding` 改为对应编码（如 `utf-8`）；如果命令清单不同，修改 `AGENTS.md` 的命令表（命令清单不在配置文件中，仍在 AGENTS.md）。
 
 ## Q7: em-cli-bridge 支持哪些 agent？
 

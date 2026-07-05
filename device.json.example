@@ -1,0 +1,25 @@
+{
+  "_comment": "em-cli-bridge 设备配置模板。复制为 device.json 后按你的设备修改。bridge 加载优先级：--config 指定 > 工作目录 device.json > ~/.em-cli-bridge/device.json > 内置默认。无配置文件时用内置默认值（RDM 设备参数），现有用户升级无需配置即可使用。",
+
+  "unlock": {
+    "_comment_stage1": "第一级解锁 Modbus 帧（HEX 字符串，空格可选）",
+    "stage1_hex": "01 10 0C 22 00 02 04 45 4C 55 43 8F 14",
+
+    "_comment_stage1_ok": "第一级正确响应（标准 Modbus 精简应答，8 字节）。设备会回显发送帧，bridge 自动剥离回显前缀后再校验",
+    "stage1_ok": "01 10 0C 22 00 02 E2 92",
+
+    "_comment_stage2": "第二级解锁命令（ASCII，\\r\\n 用字面量写法，bridge 自动转真实换行）",
+    "stage2_cmd": "AT+ENTER\\r\\n",
+
+    "_comment_stage2_mark": "第二级解锁成功标志（响应中出现此字符串即视为成功）",
+    "stage2_mark": "FreeRTOS command server"
+  },
+
+  "serial": {
+    "_comment_encoding": "设备文本输出编码。嵌入式设备常见：gbk（℃等中文字符）/ utf-8 / latin-1",
+    "encoding": "gbk",
+
+    "_comment_timeout": "命令读取默认超时（秒）。大输出命令（lfs-read-log）建议用 --long 或 --timeout 加长",
+    "default_timeout": 1.5
+  }
+}

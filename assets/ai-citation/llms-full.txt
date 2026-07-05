@@ -58,14 +58,28 @@ python device_cli.py --port COM59 cmd qSensor
 python device_cli.py --port COM59 cmd get-rtc
 python device_cli.py --port COM59 cmd version
 python device_cli.py --port COM59 cmd lfs-read 1
+python device_cli.py --port COM59 cmd lfs-read-log xxx.txt --long  # large output, 5s timeout
 python device_cli.py --port COM59 cmd set-rtc 2026 7 5 13 0 38
 ```
 
-Serial params (default 115200 8N1):
+Serial params (default 115200 8N1) and config:
 
 ```bash
-python device_cli.py --port COM59 --baud 9600 --parity E cmd qSensor
+python device_cli.py --port COM59 --baud 9600 --parity E cmd qSensor   # change baud/parity
+python device_cli.py --config mydevice.json cmd qSensor                 # custom config file
+python device_cli.py --port COM59 --timeout 3 cmd qSensor               # custom read timeout
+python device_cli.py --version                                          # show version
 ```
+
+Exit codes (agent can branch on these):
+
+| code | meaning |
+|------|---------|
+| 0 | success |
+| 1 | general error (args / config) |
+| 2 | unlock failed |
+| 3 | serial error (busy / not found) |
+| 4 | timeout (no data) |
 
 ## Agent Integration
 
@@ -85,18 +99,32 @@ Safety contract (from `AGENTS.md`):
 
 ## Adapting to Other Devices
 
-Edit constants at the top of `device_cli.py`:
+Since v0.2.0, device parameters are **config-file driven** — no code changes required. Edit `device.json` (template in `device.json.example`):
 
-```python
-UNLOCK1_HEX  = "01 10 0C 22 00 02 04 45 4C 55 43 8F 14"
-UNLOCK1_OK   = "01 10 0C 22 00 02 E2 92"
-UNLOCK2_CMD  = b"AT+ENTER\r\n"
-UNLOCK2_MARK = b"FreeRTOS command server"
+```json
+{
+  "unlock": {
+    "stage1_hex":  "01 10 0C 22 00 02 04 45 4C 55 43 8F 14",
+    "stage1_ok":   "01 10 0C 22 00 02 E2 92",
+    "stage2_cmd":  "AT+ENTER\\r\\n",
+    "stage2_mark": "FreeRTOS command server"
+  },
+  "serial": {
+    "encoding": "gbk",
+    "default_timeout": 1.5
+  }
+}
 ```
 
-- No unlock needed → make `unlock()` return `True` directly.
-- Different encoding → change `decode("gbk")` in `send_cmd`.
-- Different command set → edit the command table in `AGENTS.md`.
+Config load priority (high → low):
+1. `--config <path>` CLI flag
+2. `./device.json` in working directory
+3. `~/.em-cli-bridge/device.json`
+4. Built-in defaults (RDM device params) — auto fallback, zero-config works
+
+- No unlock needed → leave config fields empty or make `unlock()` return `True` directly.
+- Different encoding → set `serial.encoding` (e.g., `utf-8`, `latin-1`).
+- Different command set → edit the command table in `AGENTS.md` (command lists live in AGENTS.md, not the config).
 
 ## Target Users
 

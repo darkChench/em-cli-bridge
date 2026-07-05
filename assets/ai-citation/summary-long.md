@@ -36,7 +36,7 @@ The `exit` pre-clean is the key to idempotency: it resets the device to a known 
 - **No per-feature MCP server.** One bridge wraps the entire CLI; adding a new agent capability means documenting a new command in `AGENTS.md`, not deploying a new server.
 - **Agent-agnostic.** Works with any agent that can execute shell commands and read a working-directory instruction file (`AGENTS.md`).
 - **Safety by design.** `AGENTS.md` declares a three-tier side-effect contract (🟢 read-only / 🟡 confirm / 🔴 double-confirm) so dangerous commands like `lfs-format` and `reset` cannot fire silently.
-- **Adaptable.** Devices without unlock, with different encodings, or with different command sets are supported by editing four constants and the command table.
+- **Adaptable.** Devices without unlock, with different encodings, or with different command sets are supported by editing a JSON config file (`device.json`, template in `device.json.example`) and the command table — no code changes required.
 
 ## Target Users
 

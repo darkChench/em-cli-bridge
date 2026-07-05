@@ -32,7 +32,12 @@ bridge 内部自动完成：开串口 → exit 预清理 → 两级解锁（Modb
 ```bash
 pip install pyserial
 python device_cli.py --port COM59 cmd qSensor
+python device_cli.py --port COM59 cmd lfs-read-log xxx.txt --long   # large output
+python device_cli.py --config mydevice.json cmd qSensor             # custom config
+python device_cli.py --version
 ```
+
+Config file `device.json` (template: `device.json.example`) drives unlock frames, encoding, timeout — no code changes needed to adapt a new device. Load priority: `--config` > `./device.json` > `~/.em-cli-bridge/device.json` > built-in defaults.
 
 ## Target Users
 
