@@ -125,7 +125,11 @@ pip install -r requirements-mcp.txt
 python mcp_server.py --port COM59
 ```
 
-Client config (see `mcp-config-examples/`):
+Client config (two options):
+
+**Option A — workspace auto-load**: a ready-made `.mcp.json` is provided at the repo root. Clients (Claude Code / Cursor / ZCode / VS Code) automatically discover the server when the workspace is opened; users only change the `--port` value.
+
+**Option B — manual**: merge into the client's own config (see `mcp-config-examples/`):
 
 ```json
 {
@@ -179,6 +183,7 @@ Config load priority (high → low):
 em-cli-bridge/
 ├── device_cli.py              # bridge main program (shell entry, core)
 ├── mcp_server.py              # MCP server (reuses device_cli kernel, stdio)
+├── .mcp.json                  # workspace-level MCP config (auto-loaded by clients)
 ├── AGENTS.md                  # agent behavior spec
 ├── llms.txt                   # short AI index (this repo root)
 ├── README.md                  # human-readable docs
@@ -187,7 +192,7 @@ em-cli-bridge/
 ├── requirements-mcp.txt       # optional MCP deps (mcp SDK)
 ├── setup.bat / setup.sh       # one-click venv + deps setup
 ├── device.json.example        # device config template
-├── mcp-config-examples/       # MCP client config samples
+├── mcp-config-examples/       # MCP client config samples (manual option)
 └── assets/ai-citation/        # AI citation corpus
     ├── llms-full.txt          # this file
     ├── summary-short.md

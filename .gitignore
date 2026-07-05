@@ -38,3 +38,11 @@ diag_encoding.py
 
 # 真实设备配置（可能含自定义参数，不入库；模板见 device.json.example）
 device.json
+
+# 编辑器/agent 自动生成的工作区私有目录（用户本地状态，不入库）
+.zcode/
+.vscode/
+.idea/
+
+# Windows 重定向误生成的保留设备名文件（垃圾，不入库）
+nul

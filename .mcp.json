@@ -1,0 +1,23 @@
+{
+  "_comment_about_this_file": "工作区级 MCP 配置。Claude Code / Cursor / ZCode / VS Code 等客户端会自动读取仓库根目录的 .mcp.json，发现 em-cli-bridge 这个 MCP server。克隆本项目后按 _setup 步骤改两处即可使用。",
+
+  "_setup": [
+    "1. 先装依赖：运行 setup.bat (Windows) 或 setup.sh (Linux/macOS)，再 pip install -r requirements-mcp.txt",
+    "2. 把 args 里 COM59 改成你设备的实际串口号（Windows 设备管理器 → 端口(COM 和 LPT) 查看）",
+    "3. 如果 'python' 命令找不到，把 command 改成 python 完整路径，例如 Windows: C:\\Users\\<用户名>\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    "4. 如果用了 .venv，command 用 .venv 内的 python：Windows .venv\\Scripts\\python.exe；Linux/macOS .venv/bin/python",
+    "5. mcp_server.py 用相对路径 'mcp_server.py'，多数客户端会在工作区根目录解析；如不识别，改成绝对路径"
+  ],
+
+  "_dangerous_tools": "lfs_format / reset 两个 tool 需传 confirm=true 才执行（代码级硬保护），不会被 agent 误触发",
+
+  "mcpServers": {
+    "em-cli-bridge": {
+      "command": "python",
+      "args": [
+        "mcp_server.py",
+        "--port", "COM59"
+      ]
+    }
+  }
+}

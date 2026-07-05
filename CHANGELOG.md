@@ -8,13 +8,14 @@
 - **MCP server**（`mcp_server.py`）：把设备能力暴露为 14 个标准 MCP tool（stdio 传输），复用 `device_cli.py` 内核，不重写串口逻辑。启动时开一次串口并解锁，后续 tool 调用复用长连接。
   - 14 个 tool：`q_sensor` / `sw_sensor` / `get_rtc` / `set_rtc` / `version` / `runtime` / `lfs_read` / `lfs_read_log` / `lfs_read_errno` / `lfs_log_info` / `lfs_errno_info` / `lfs_flush` / `lfs_format` / `reset`
   - 危险 tool（`lfs_format` / `reset`）需显式 `confirm=true`，**代码级硬保护**。
-- **客户端配置示例**（`mcp-config-examples/`）：Claude Desktop / Cursor / ZCode 三种客户端 + 使用说明。
-- README 新增"MCP server"章节，含两种方式对比表。
+- **工作区级 MCP 配置**（`.mcp.json`）：客户端打开工作区时自动发现 server，用户只需改串口号，开箱即用。
+- **客户端配置示例**（`mcp-config-examples/`）：Claude Desktop / Cursor / ZCode 三种客户端 + 使用说明（手动配置场景）。
+- README 新增"MCP server"章节，含两种方式（自动加载 / 手动配置）对比。
 - faq.md 新增 Q11（shell vs MCP 怎么选）/ Q12（MCP 危险命令保护）。
 - llms-full.txt 新增 MCP Server 章节。
 
 ### Changed
-- 仓库结构图补充 `mcp_server.py` 和 `mcp-config-examples/`。
+- 仓库结构图补充 `mcp_server.py`、`.mcp.json` 和 `mcp-config-examples/`。
 
 ## [0.2.1] — 2026-07-05
 
