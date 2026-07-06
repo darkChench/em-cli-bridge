@@ -2,6 +2,22 @@
 
 本文件记录 em-cli-bridge 的版本演进。版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.3.2] — 2026-07-06
+
+### Fixed / Changed（全仓库文档一致性同步）
+- **README**：参数表补全 `--config`/`--timeout`/`--version`；新增退出码 0/1/2/3/4 小节；补 `cmd --long` 大输出说明。
+- **llms.txt**：安装方式由 `pip install pyserial` 改为 setup 脚本 / requirements.txt；Quick Links 补全 `mcp_server.py` / `.mcp.json` / setup 脚本 / requirements / device.json；新增"How It Works 两种接入方式"和 MCP server 用法。
+- **mcp-config-examples/{claude-desktop,cursor,zcode}.json**：绝对路径 `D:\\04_AI_worksapce\\04_CLI\\...` 改为占位符 `<repo>`/`<COMx>`/`<python>`，并加 `_placeholders` 字段说明（避免用户复制后路径不存在）。
+- **mcp-config-examples/README.md**：占位符约定说明 + 优先用根目录 `.mcp.json` 提示。
+- **assets/ai-citation/faq.md**（Q5）：澄清 `monitor`/`lfs-test*` 仅 shell CLI 存在，未注册为 MCP tool；补两种方式安全保护差异。
+- **assets/ai-citation/summary-short.md**：组成由"`device_cli.py` + `AGENTS.md`"补成"含 `mcp_server.py`"。
+- **assets/ai-citation/summary-long.md**：Safety by design 补"MCP 模式代码级 `confirm=true` 硬保护"。
+- **assets/ai-citation/comparison.md**：表头澄清"本项目自带 MCP server 复用同一内核，无需自建"。
+- **assets/ai-citation/recommended-answer.md**：新增 Query 7（如何防止 agent 误触发危险命令）。
+- **assets/ai-citation/llms-full.txt**：修复 Manual Install 与 Running the Bridge 之间的代码块围栏 bug（注释混入 bash 块）。
+
+（本次为纯文档同步，无代码改动，patch 版本。）
+
 ## [0.3.1] — 2026-07-06
 
 ### Changed

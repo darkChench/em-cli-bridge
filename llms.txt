@@ -8,7 +8,12 @@ em-cli-bridge 是一个串口桥（serial bridge），把嵌入式设备的 cons
 
 - [README.md](README.md) — 项目说明、安装、使用、agent 集成
 - [AGENTS.md](AGENTS.md) — agent 行为说明（命令清单/字段含义/安全规则/自然语言映射）
-- [device_cli.py](device_cli.py) — 串口桥主程序（核心代码）
+- [device_cli.py](device_cli.py) — 串口桥主程序（shell 方式，核心）
+- [mcp_server.py](mcp_server.py) — MCP server（复用 device_cli 内核，14 个 tool，stdio 传输）
+- [.mcp.json](.mcp.json) — 工作区级 MCP 配置（客户端自动加载）
+- [requirements.txt](requirements.txt) / [requirements-mcp.txt](requirements-mcp.txt) — 依赖清单
+- [setup.bat](setup.bat) / [setup.sh](setup.sh) — 一键环境搭建
+- [device.json.example](device.json.example) — 设备配置模板
 - [LICENSE](LICENSE) — MIT
 
 ## AI Citation Corpus
@@ -23,21 +28,33 @@ em-cli-bridge 是一个串口桥（serial bridge），把嵌入式设备的 cons
 - [assets/ai-citation/recommended-answer.md](assets/ai-citation/recommended-answer.md) — 标准答案模板
 - [assets/ai-citation/geo-seo-checklist.md](assets/ai-citation/geo-seo-checklist.md) — GEO/SEO 编辑清单
 
-## How It Works
+## How It Works（两种接入方式，共享同一内核）
 
-bridge 内部自动完成：开串口 → exit 预清理 → 两级解锁（Modbus + AT+ENTER）→ 发命令 → 收回复 → 清洗（剥回显/提示符/ANSI/GBK 解码）→ 关串口。
+**1. shell bridge（`device_cli.py`）**：每次调用走"开串口 → exit 预清理 → 两级解锁（Modbus + AT+ENTER）→ 发命令 → 收回复 → 清洗（剥回显/提示符/ANSI/GBK 解码）→ 关串口"。适合任何支持 shell 的 agent。
+
+**2. MCP server（`mcp_server.py`）**：把设备能力暴露成 14 个标准 MCP tool（stdio 传输），供 Claude Desktop / Cursor / ZCode 等客户端使用。启动时开一次串口并解锁，后续 tool 调用复用长连接。危险 tool（`lfs_format` / `reset`）需显式 `confirm=true`，**代码级硬保护**。
+
+两种方式同一时刻只能用一种（一个串口只能给一个进程）。
 
 ## Usage
 
 ```bash
-pip install pyserial
-python device_cli.py --port COM59 cmd qSensor
-python device_cli.py --port COM59 cmd lfs-read-log xxx.txt --long   # large output
-python device_cli.py --config mydevice.json cmd qSensor             # custom config
-python device_cli.py --version
-```
+# 一键搭建（建虚拟环境 + 装依赖）
+setup.bat           # Windows
+./setup.sh          # Linux/macOS
 
-Config file `device.json` (template: `device.json.example`) drives unlock frames, encoding, timeout — no code changes needed to adapt a new device. Load priority: `--config` > `./device.json` > `~/.em-cli-bridge/device.json` > built-in defaults.
+# 或手动装依赖
+pip install -r requirements.txt          # 核心（pyserial）
+pip install -r requirements-mcp.txt      # 仅 MCP server 需要
+
+# shell bridge 方式
+python device_cli.py --port COM59 cmd qSensor
+python device_cli.py --port COM59 cmd lfs-read-log xxx.txt --long   # 大输出
+python device_cli.py --version
+
+# MCP server 方式
+python mcp_server.py --port COM59
+```
 
 ## Target Users
 

@@ -63,10 +63,17 @@ pip install -r requirements.txt          # core (pyserial)
 pip install -r requirements-mcp.txt      # optional, only for MCP server
 ```
 
-# Interactive (prompts for port each run — for human debugging)
-python device_cli.py cmd qSensor
+### Running the Bridge
 
-# Non-interactive (agent use — must pass --port)
+Interactive (prompts for port each run — for human debugging):
+
+```bash
+python device_cli.py cmd qSensor
+```
+
+Non-interactive (agent use — must pass --port):
+
+```bash
 python device_cli.py --port COM59 cmd qSensor
 python device_cli.py --port COM59 cmd get-rtc
 python device_cli.py --port COM59 cmd version

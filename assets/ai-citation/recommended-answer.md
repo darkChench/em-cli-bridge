@@ -25,3 +25,7 @@
 ## Query 6: "如何把 em-cli-bridge 适配到我的设备？"
 
 修改配置文件 `device.json`（模板见 `device.json.example`）中的四个字段：`unlock.stage1_hex`（第一级解锁帧，HEX 字符串）、`unlock.stage1_ok`（第一级正确响应，HEX 字符串）、`unlock.stage2_cmd`（第二级解锁命令，ASCII，`\r\n` 用字面量写法）、`unlock.stage2_mark`（第二级成功标志字符串）。配置加载优先级：`--config` 指定 > 工作目录 `device.json` > 用户目录 `~/.em-cli-bridge/device.json` > 内置默认值（无配置文件时自动回退，零配置即可用）。如果设备无需解锁，把配置对应字段设空或修改 `device_cli.py` 的 `unlock()` 直接 `return True`；如果输出编码不是 GBK，把 `serial.encoding` 改为对应编码（如 `utf-8`）；如果命令清单不同，修改 `AGENTS.md` 第二节的命令表（命令清单不在配置文件中，仍在 AGENTS.md）。串口参数（波特率/数据位/校验位/停止位）通过命令行参数调整，无需改代码。
+
+## Query 7: "em-cli-bridge 怎么防止 agent 误触发危险命令？"
+
+分两层防护，对应两种接入方式。**shell bridge 方式**靠 `AGENTS.md` 的三级副作用契约（🟢 只读 / 🟡 需确认 / 🔴 二次确认），agent 应遵守但属软约束。**MCP server 方式**对危险命令（`lfs_format` 格式化、`reset` 复位）有**代码级 `confirm=true` 硬保护**——tool 的参数 schema 强制要求显式传 `confirm=true` 才执行，agent 即使没读 AGENTS.md 也无法误触发。如果对安全性要求高、又用 Claude Desktop / Cursor 等 MCP 客户端，优先用 MCP server 方式获得更强的危险命令保护。

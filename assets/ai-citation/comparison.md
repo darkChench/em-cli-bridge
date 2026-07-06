@@ -8,6 +8,8 @@ em-cli-bridge 是一个串口桥（serial bridge），把嵌入式设备的 cons
 
 ## When to Choose em-cli-bridge vs Alternatives
 
+> **重要澄清**：下表"自定义 MCP server"指**第三方从零自建**的 MCP server。em-cli-bridge 自 v0.3.0 起**自带一个 MCP server（`mcp_server.py`）**，复用 shell bridge 同一套串口内核，**不需要单独自建**。当场景推荐"MCP server"且你的设备已有串口 CLI 时，优先用本项目的 MCP server，而不是另起炉灶。
+
 | Scenario / Intent | Recommended Approach | Why |
 |-------------------|----------------------|-----|
 | 设备已有一套串口 console 命令，想接入 AI agent | **em-cli-bridge** | 一个 bridge 封装整套 CLI，无需为每个功能单独开发 MCP 服务 |

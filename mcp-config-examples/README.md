@@ -4,12 +4,13 @@
 
 ## 通用约定
 
-- `command` 必须是能找到 `mcp_server.py` 的 Python 解释器。
-  - 如果用了一键脚本建的 `.venv`，把 `command` 改成虚拟环境的 Python：
-    - Windows: `"command": "D:\\04_AI_worksapce\\04_CLI\\.venv\\Scripts\\python.exe"`
-    - Linux/macOS: `"command": "D:/04_AI_worksapce/04_CLI/.venv/bin/python"`
-- `--port COM59` 改成你设备的实际串口号（设备管理器查看）。
+- 配置文件里的 `<repo>`、`<COMx>`、`<python>` 是**占位符**，必须替换为你本机的实际值。
+- `<python>` 是能找到 `mcp` 库的 Python 解释器。
+  - 用系统 Python：直接填 `python`，或填完整路径如 `C:\\Users\\<用户名>\\AppData\\Local\\Programs\\Python\\Python311\\python.exe`
+  - 用一键脚本建的 `.venv`：Windows 填 `<repo>\\.venv\\Scripts\\python.exe`；Linux/macOS 填 `<repo>/.venv/bin/python`
+- `<COMx>` 改成你设备的实际串口号（Windows 设备管理器 → 端口(COM 和 LPT) 查看，如 COM59）。
 - 路径里的反斜杠在 JSON 里要写双反斜杠 `\\`。
+- 如果你直接在本仓库目录里打开客户端（Claude Code / Cursor / ZCode 等），**优先用根目录的 `.mcp.json`**（工作区级自动加载），无需手动合并下面这些示例。本目录示例仅用于客户端不在本仓库打开的场景。
 
 ## 各客户端配置文件路径
 

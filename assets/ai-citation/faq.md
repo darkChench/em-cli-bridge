@@ -20,7 +20,9 @@ em-cli-bridge 是一个串口桥（serial bridge），把嵌入式设备的 cons
 
 ## Q5: 哪些命令可以直接执行，哪些需要确认？
 
-`AGENTS.md` 定义了三级副作用契约：🟢 只读命令（如 `qSensor`、`get-rtc`、`version`、`runtime`、`lfs-read *`）可直接执行；🟡 有副作用命令（如 `sw-sensor`、`set-rtc`、`lfs-flush`、`monitor`、`lfs-test*`）执行前必须向用户确认；🔴 危险命令（`lfs-format`、`reset`）必须明确二次确认后才能执行。
+`AGENTS.md` 定义了三级副作用契约：🟢 只读命令（如 `qSensor`、`get-rtc`、`version`、`runtime`、`lfs-read *`）可直接执行；🟡 有副作用命令（如 `sw-sensor`、`set-rtc`、`lfs-flush`，以及仅 shell CLI 存在的 `monitor`、`lfs-test*`）执行前必须向用户确认；🔴 危险命令（`lfs-format`、`reset`）必须明确二次确认后才能执行。
+
+**两种接入方式的差异**：shell bridge 方式靠 AGENTS.md 的文字约定（agent 应遵守但非强制）；MCP server 方式对危险命令（`lfs_format`/`reset`）有**代码级 `confirm=true` 硬保护**，agent 即使没读 AGENTS.md 也无法误触发。注意 MCP server 暴露 14 个 tool，不含 `monitor`/`nomonitor`/`lfs-test*`（这几个仅作为 shell CLI 命令存在，未注册为 MCP tool）。
 
 ## Q6: 如何适配到不同的设备？
 

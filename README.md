@@ -152,9 +152,28 @@ python device_cli.py --port COM59 --baud 9600 --parity E cmd qSensor
 | `--bytesize` | 8 | 数据位 5/6/7/8 |
 | `--parity` | N | 校验位 N/E/O/M/S |
 | `--stopbits` | 1 | 停止位 1/1.5/2 |
+| `--config PATH` | 自动查找 | 设备配置文件（默认按优先级查找 `device.json`） |
+| `--timeout N` | 读配置再 1.5 | 命令读取超时秒数 |
 | `--debug` | off | 打印收发细节到 stderr |
+| `--version` | — | 查看版本 |
+
+读取大输出命令（如 `lfs-read-log`）用 `--long` 加长超时到 5 秒：
+
+```bash
+python device_cli.py --port COM59 cmd lfs-read-log somefile.txt --long
+```
 
 > agent 调用时务必带 `--port`，避免卡在输入等待。
+
+**退出码**（agent 可据此做条件分支）：
+
+| code | 含义 |
+|------|------|
+| 0 | 成功 |
+| 1 | 通用错误（参数 / 配置） |
+| 2 | 解锁失败 |
+| 3 | 串口错误（被占用 / 不存在） |
+| 4 | 超时（无数据返回） |
 
 ## 配合 agent 使用
 

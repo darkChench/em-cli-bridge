@@ -1,12 +1,17 @@
 {
-  "_comment": "Cursor 配置示例。把 mcpServers 内容合并进 Cursor 的全局或项目级 MCP 配置。",
+  "_comment": "Cursor 配置示例。把 mcpServers 内容合并进 Cursor 的全局或项目级 MCP 配置。把下方 <repo> 和 <COMx> 替换为你本机的实际值。",
+  "_placeholders": {
+    "<repo>": "本仓库根目录的绝对路径",
+    "<COMx>": "设备串口号，如 COM59",
+    "<python>": "python 解释器；用 .venv 时改成 <repo>\\.venv\\Scripts\\python.exe"
+  },
   "_config_path": "Settings -> MCP -> Add new MCP Server (或在 .cursor/mcp.json)",
   "mcpServers": {
     "em-cli-bridge": {
-      "command": "python",
+      "command": "<python>",
       "args": [
-        "D:\\04_AI_worksapce\\04_CLI\\mcp_server.py",
-        "--port", "COM59"
+        "<repo>\\mcp_server.py",
+        "--port", "<COMx>"
       ]
     }
   }
